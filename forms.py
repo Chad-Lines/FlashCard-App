@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 import wtforms
-from app import db
+from db_functions import SQLExec
 
 class FlashCard(wtforms.Form):
     front = wtforms.TextAreaField('Front')

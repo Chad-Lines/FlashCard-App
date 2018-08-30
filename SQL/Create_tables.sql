@@ -11,7 +11,7 @@ create table deck(
     id              serial primary key,
     name            text not null unique constraint blank_name check (length(name) > 0),
     num_cards_due   integer,
-    person_id       integer,
+    person_id       integer
 );
 
 create table card(
