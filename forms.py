@@ -9,3 +9,7 @@ class FlashCard(wtforms.Form):
         'Deck',
         choices=()
     ) 
+
+class Deck(wtforms.Form):
+    name = wtforms.StringField('Name')
+    description = wtforms.TextAreaField('Description')
