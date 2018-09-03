@@ -3,9 +3,9 @@ from app import app
 from forms import FlashCard
 
 @app.route('/')
-def index():
-       
-    return render_template('index.html', deck_list=deck_list)
+def index():       
+    
+    return render_template('index.html')
 
 @app.route('/create')
 def create():

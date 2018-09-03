@@ -8,9 +8,8 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)                      
     username = db.Column(db.String(64), index=True, nullable=False, unique=True)      
     email = db.Column(db.String(120), index=True, nullable=False, unique=True)         
-    password_hash = db.Column(db.String(128))                         
-    decks = db.relationship('Deck', backref='owner', lazy='dynamic') 
-    cards = db.relationship('Card', backref='owner', lazy='dynamic') 
+    password_hash = db.Column(db.String(128))
+    schema = 'omni'
 
     def __repr__(self):             
         return 'User: {}'.format(self.username)
@@ -25,9 +24,9 @@ class Deck(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), index=True, nullable=False)
     description = db.Column(db.String(500))
-    cards = db.relationship('Card', backref='deck', lazy='dynamic')
-    owner = db.Column(db.Integer, db.ForeignKey('user.id'))
-
+    owner = db.Column(db.Integer, db.ForeignKey('User.id'))
+    schema = 'omni'
+    
     def __repr__(self):             
         return 'Deck: {}'.format(self.name)
 
@@ -35,7 +34,9 @@ class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     front = db.Column(db.String(1000), nullable=False)
     back = db.Column(db.String(1000), nullable=False)
-    owner = db.Column(db.Integer, ForeignKey('user.id'))
+    owner = db.Column(db.Integer, db.ForeignKey('User.id'))
+    deck = db.Column(db.Integer, db.ForeignKey('Deck.id'))
+    schema = 'omni'
 
     def __repr__(self):             
         return 'Card: {}'.format(self.front)
