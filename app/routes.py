@@ -1,6 +1,6 @@
 from flask import render_template, request, url_for
 from app import app
-from forms import FlashCard
+from app.forms import FlashCard
 
 @app.route('/')
 def index():       
@@ -12,6 +12,3 @@ def create():
     form = FlashCard()
     return render_template('create.html', form=form)
 
-# Running the app
-if __name__ == '__main__':
-    app.run(debug=True)

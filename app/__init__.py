@@ -12,5 +12,8 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 
+from app import routes, models
+
 # flask db init
 # flask db migrate -m "Desc"
+# flask db upgrade
