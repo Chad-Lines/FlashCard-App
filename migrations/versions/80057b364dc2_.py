@@ -1,8 +1,8 @@
-"""Added Card and Deck tables
+"""empty message
 
-Revision ID: b3d85cba4af9
+Revision ID: 80057b364dc2
 Revises: 
-Create Date: 2018-09-03 17:14:00.609752
+Create Date: 2018-09-04 13:41:14.462722
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b3d85cba4af9'
+revision = '80057b364dc2'
 down_revision = None
 branch_labels = None
 depends_on = None
