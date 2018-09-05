@@ -9,12 +9,21 @@ flask db upgrade
 # ---------------------------------
 # Imports
 from app import db
-from app.models import User
+from app.models import User, Deck, Card
 
 # Creating a user
-u = User(username='chad', email='chad.lines1@gmail.com')
+u = User(username='john', email='john@example.com')
 db.session.add(u)
 db.session.commit()
 
 # Testing that the user exists
 User.query.get(1)
+
+# Adding a card to a user
+u = User.query.get(1)
+c = Card(front='Hello', back='Talofa', owner=u)
+db.session.add(c)
+db.session.commit()
+
+# Getting all cards belonging to user u
+u.cards.all()
