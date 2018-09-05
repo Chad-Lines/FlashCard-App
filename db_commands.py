@@ -27,3 +27,9 @@ db.session.commit()
 
 # Getting all cards belonging to user u
 u.cards.all()
+
+# Creating a user with a password
+u = User(username='Don', email='don@example.com')
+u.set_password('Passw0rd')
+db.session.add(u)
+db.session.commit()
