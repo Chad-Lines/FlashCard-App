@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hello, {{ user.username }}</h1>
+    {% for card in cards %}
+        <div><p><b>Front: {{ card.front }}</b></p>Back: {{ card.back }}</div>
+    {% endfor %}
+{% endblock %}
