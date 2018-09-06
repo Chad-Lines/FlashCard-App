@@ -3,10 +3,10 @@
 {% block content %}
     <h1>User: {{ user.username }}</h1>
     <hr>
-    {% for card in cards %}
-        <p>
-            <b>Front:</b> {{ card.front }}<br>
-            <b>Back:</b> {{ card.back }}
-        </p>
-    {% endfor %}
+    <h2>Decks</h2>
+    <ul>
+        {% for d in decks %}
+            <li>{{ d.name }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

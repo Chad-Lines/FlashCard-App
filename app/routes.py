@@ -16,8 +16,8 @@ def index():
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    cards = user.cards
-    return render_template('user.html', user=user, cards=cards)
+    decks = user.decks
+    return render_template('user.html', user=user, decks=decks)
 
 
 # LOGIN --------------------------------------

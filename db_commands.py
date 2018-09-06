@@ -33,3 +33,10 @@ u = User(username='Don', email='don@example.com')
 u.set_password('Passw0rd')
 db.session.add(u)
 db.session.commit()
+
+# Creating a deck
+d = Deck(name='Samoan Language', user_id=u.id)
+
+# Adding a card to a deck
+c = Card.query.get(1)
+c.deck_id = 1
