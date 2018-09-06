@@ -19,6 +19,12 @@ def user(username):
     decks = user.decks
     return render_template('user.html', user=user, decks=decks)
 
+# DECK VIEW --------------------------------------
+@app.route('/user/<username>/<deck>')
+@login_required
+def deck(username, deck):
+    deck = deck
+    return render_template('deck.html', deck=deck)
 
 # LOGIN --------------------------------------
 @app.route('/login', methods=['GET', 'POST'])

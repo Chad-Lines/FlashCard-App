@@ -6,7 +6,7 @@
     <h2>Decks</h2>
     <ul>
         {% for d in decks %}
-            <li>{{ d.name }}</li>
+            <li><a href="{{ url_for('deck', username=user.username, deck=d) }}">{{ d.name }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}
