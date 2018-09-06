@@ -1,7 +1,7 @@
 from flask_login import current_user, login_user, logout_user, login_required
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
-from app.models import User
+from app.models import User, Deck, Card
 from app.forms import LoginForm, RegistrationForm
 from app import app, db
 
@@ -24,7 +24,7 @@ def user(username):
 @app.route('/user/<username>/<deck>') 
 @login_required 
 def deck(username, deck): 
-    deck = deck 
+    deck = Deck.query.filter_by(id=deck).first_or_404()
     return render_template('deck.html', deck=deck) 
 
 # LOGIN --------------------------------------
