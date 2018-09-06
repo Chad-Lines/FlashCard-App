@@ -1,0 +1,27 @@
+<h1>{{ card.front }}</h1>
+
+<div id="back" style="visibility: hidden;">
+    <hr>
+    <h3>{{ card.back }}</h3>
+    <div>
+        <button type="submit">Good</button>
+        <button type="submit">Bad</button>
+    </div>
+</div>
+
+<button id="showBtn" onclick="showBack()">Show</button>
+
+<script>
+    // Function to show the back of the card and allow the user
+    // to indicate whether they got it or not.
+    function showBack() {
+        var back = document.getElementById("back");
+        var showBtn = document.getElementById("showBtn")
+
+        // Show the back of the card and the Good/Bad buttons
+        back.style.visibility = "visible";     
+        
+        // Hide the "show" button
+        showBtn.style.visibility = "hidden";    
+    }
+</script>
