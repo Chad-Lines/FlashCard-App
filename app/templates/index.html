@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hello, {{ current_user.username }}</h1>
-    {% for card in cards %}
-        <div><p><b>Front: {{ card.front }}</b></p>Back: {{ card.back }}</div>
-    {% endfor %}
+    <h1>Welcome to FlashCard</h1> 
+    <p>Please log in to continue: <a href="{{ url_for('login') }}">Login</a></p> 
 {% endblock %}

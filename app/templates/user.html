@@ -1,0 +1,12 @@
+{% extends "base.html" %} 
+ 
+{% block content %} 
+    <h1>User: {{ user.username }}</h1> 
+    <hr> 
+    <h2>Decks</h2> 
+    <ul> 
+        {% for d in decks %} 
+        <li><a href="{{ url_for('deck', username=user.username, deck=d) }}">{{ d.name }}</a></li> 
+        {% endfor %} 
+    </ul> 
+{% endblock %}

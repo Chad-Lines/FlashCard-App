@@ -8,19 +8,24 @@ from app import app, db
 # INDEX/HOME --------------------------------------
 @app.route('/')
 @app.route('/index')
-@login_required
 def index():
-    cards = [
-        {
-            'front':    'Hello',
-            'back':     'Talofa'
-        },
-        {
-            'front':    'Goodbye',
-            'back':     'Tofa'
-        }
-    ]
-    return render_template('index.html', title='Home', cards=cards)
+    return render_template('index.html', title='Home') 
+ 
+# USER HOME -------------------------------------- 
+@app.route('/user/<username>') 
+@login_required 
+def user(username): 
+    user = User.query.filter_by(username=username).first_or_404() 
+    decks = user.decks 
+    return render_template('user.html', user=user, decks=decks) 
+ 
+
+# DECK VIEW -------------------------------------- 
+@app.route('/user/<username>/<deck>') 
+@login_required 
+def deck(username, deck): 
+    deck = deck 
+    return render_template('deck.html', deck=deck) 
 
 # LOGIN --------------------------------------
 @app.route('/login', methods=['GET', 'POST'])

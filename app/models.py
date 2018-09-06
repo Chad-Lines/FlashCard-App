@@ -28,7 +28,7 @@ class Deck(db.Model):
     cards = db.relationship('Card', backref='deck', lazy='dynamic')
 
     def __repr__(self):
-        return 'Card: {}'.format(self.front)
+        return 'Deck: {}'.format(self.name) 
 
 class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,0 +1,10 @@
+{% extends "base.html" %} 
+ 
+{% block content %} 
+    <h1>Deck Test Successful</h1> 
+    <h3>Deck: {{ deck.name }}</h3> 
+    {% for c in deck.cards %} 
+        <p>{{ c.front }}</p> 
+    {% endfor %} 
+ 
+{% endblock %}
