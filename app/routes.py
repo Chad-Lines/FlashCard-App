@@ -5,7 +5,7 @@ from app.models import User
 from app.forms import LoginForm, RegistrationForm
 from app import app, db
 
-# INDEX --------------------------------------
+# INDEX/HOME --------------------------------------
 @app.route('/')
 @app.route('/index')
 @login_required
@@ -58,8 +58,10 @@ def register():
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
+        # defining the user
         user = User(username=form.username.data, email=form.email.data)
         user.set_password(form.password.data)
+        # saving the user to the database and confirming to the user
         db.session.add(user)
         db.session.commit()
         flash('You have been registered with username: {}'.format(user.username))
