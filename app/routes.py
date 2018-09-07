@@ -79,10 +79,16 @@ def deck(username, deck):
 def create_card(username, deck):
     form = CardForm()
     if form.validate_on_submit():
-        deck_id = Deck.query.filter_by(id=deck)
-        card = Card(front=form.front.data, back=form.back.data, deck_id=deck_id, user_id=current_user.id)
+        #deck = Deck.query.filter_by(id=deck)
+        card = Card(front=form.front.data, back=form.back.data, deck_id=deck.id, user_id=current_user.id)
         db.session.add(card)
         db.session.commit()
         flash('New card created succesfully')
         return redirect(url_for('user', username=current_user.username))
-    return render_template('create_card.html', title='New Card', form=form)
+    return render_template('create_card.html', title='New Card', form=form, deck=deck)
+
+# VIEW ALL CARDS --------------------------------------
+@app.route('/<username>/<deck>/all-cards', methods=['GET', 'POST'])
+@login_required
+def view_all_cards(username, deck):
+    return render_template('allcards.html', deck=deck)

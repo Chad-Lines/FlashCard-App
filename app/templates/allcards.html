@@ -1,0 +1,15 @@
+{% extends "base.html" %} 
+ 
+{% block content %} 
+    <h1>{{ deck }}</h1>
+    <table class=table>
+        {% for card in deck %}
+            <tr>            
+                <td>{{ card.front }}</td>
+                <td><button class="btn" onclick="">Edit</button></td>
+                <td><button class="btn" onclick="">Delete</button></td>
+
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
