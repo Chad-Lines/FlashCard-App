@@ -2,5 +2,12 @@
 
 {% block content %}
     <h1>Welcome to FlashCard</h1> 
-    <p>Please log in to continue: <a href="{{ url_for('login') }}">Login</a></p> 
+    {% if current_user.is_anonymous %}
+        <p>Please log in to continue: <a href="{{ url_for('login') }}">Login</a></p> 
+    {% else %}
+        <p>
+            Proceed to <a href="{{ url_for('user', username=current_user.username) }}">Home</a>
+            or <a href="{{ url_for('logout') }}">Logout</a> 
+        </p>
+    {% endif %}
 {% endblock %}

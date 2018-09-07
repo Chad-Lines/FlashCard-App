@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>New Card</h1>
+    <form action="" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.front.label }}<br>
+            {{ form.front }}
+        </p>
+        <p>
+            {{ form.back.label }}<br>
+            {{ form.back }}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    <p><a href="{{ url_for('user', username=current_user.username) }}">Cancel</a></p>
+
+
+{% endblock %}

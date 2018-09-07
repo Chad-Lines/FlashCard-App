@@ -1,14 +1,17 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
-from app.models import User
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField
+from wtforms.validators import ValidationError, DataRequired, Length, Email, EqualTo
+from app.models import User, Card, Deck
+from flask_login import current_user
 
+# Existing user login form
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
+# New user registration form
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -27,3 +30,13 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Email already in use')
 
+# Creating a new card
+class CardForm(FlaskForm):
+    front = TextAreaField('Front', validators=[DataRequired(), Length(min=1, max=500)])
+    back = TextAreaField('Back', validators=[DataRequired(), Length(min=1, max=500)])
+    submit = SubmitField('Create')
+
+# Creating a new deck
+class DeckForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Create')

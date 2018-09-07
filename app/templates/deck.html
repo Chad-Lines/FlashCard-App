@@ -2,6 +2,8 @@
  
 {% block content %} 
     <h3>{{ deck.name }}</h3> 
+    <p>{{ deck.id }}</p>
+    <a href="{{ url_for('create_card', username=current_user.username, deck=deck.id) }}">Add Card</a>
     {% for card in deck.cards %} 
         {% include '_card.html' %}
     {% endfor %} 
