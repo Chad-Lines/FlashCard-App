@@ -1,5 +1,5 @@
 from flask_login import current_user, login_user, logout_user, login_required
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, session
 from werkzeug.urls import url_parse
 from app.models import User, Deck, Card
 from app.forms import LoginForm, RegistrationForm, CardForm, DeckForm
@@ -79,16 +79,29 @@ def deck(username, deck):
 def create_card(username, deck):
     form = CardForm()
     if form.validate_on_submit():
-        #deck = Deck.query.filter_by(id=deck)
+        #deck = session.get('deck')
+        deck = Deck.query.filter_by(id=deck).first_or_404()
         card = Card(front=form.front.data, back=form.back.data, deck_id=deck.id, user_id=current_user.id)
         db.session.add(card)
         db.session.commit()
         flash('New card created succesfully')
-        return redirect(url_for('user', username=current_user.username))
+        return redirect(url_for('deck', username=current_user.username, deck=deck.id))
     return render_template('create_card.html', title='New Card', form=form, deck=deck)
 
 # VIEW ALL CARDS --------------------------------------
 @app.route('/<username>/<deck>/all-cards', methods=['GET', 'POST'])
 @login_required
 def view_all_cards(username, deck):
+    deck = Deck.query.filter_by(id=deck).first_or_404()
     return render_template('allcards.html', deck=deck)
+
+# DELETE CARD --------------------------------------
+@app.route('/delete-card/<deck_id>/<card_id>', methods=['GET', 'POST'])
+@login_required
+def delete_card(card_id, deck_id):
+    card = Card.query.filter_by(id=card_id).first_or_404()
+    card_front = card.front
+    db.session.delete(card)
+    db.session.commit()
+    flash('Card: "{}" has been deleted'.format(card_front))
+    return redirect(url_for('view_all_cards', username=current_user.username, deck=deck_id))

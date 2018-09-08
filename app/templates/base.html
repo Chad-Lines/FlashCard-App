@@ -11,7 +11,7 @@
         {% endif %}
     </head>
     <body>
-        <div>
+        <div style="margin-left: 2.5%; margin-right: 2.5%;">
             <a href="{{ url_for('index') }}">FlashCard</a> |
             {% if current_user.is_anonymous %}
                 <a href="{{ url_for('login') }}">Login</a> 
@@ -21,15 +21,15 @@
             {% endif %}
         </div>
         <hr>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul>
+        <div  style="margin-left: 5%; margin-right: 5%;">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
                     {% for message in messages %}
-                        <li>{{ message }}</li>
+                        <p style="color:tomato;">{{ message }}</p>
                     {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
+                {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </div>
     </body>
 </html>
