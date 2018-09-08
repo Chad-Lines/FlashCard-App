@@ -77,10 +77,10 @@ def deck(username, deck):
 @app.route('/<username>/<deck>/create-card', methods=['GET', 'POST'])
 @login_required 
 def create_card(username, deck):
-    form = CardForm()
+    form = CardForm()    
+    deck = Deck.query.filter_by(id=deck).first_or_404()
     if form.validate_on_submit():
         #deck = session.get('deck')
-        deck = Deck.query.filter_by(id=deck).first_or_404()
         card = Card(front=form.front.data, back=form.back.data, deck_id=deck.id, user_id=current_user.id)
         db.session.add(card)
         db.session.commit()
@@ -105,3 +105,4 @@ def delete_card(card_id, deck_id):
     db.session.commit()
     flash('Card: "{}" has been deleted'.format(card_front))
     return redirect(url_for('view_all_cards', username=current_user.username, deck=deck_id))
+
