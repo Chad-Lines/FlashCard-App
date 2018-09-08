@@ -2,12 +2,13 @@
  
 {% block content %} 
     <h1>{{ deck.name }}</h1>
+    {% include '_message.html' %}
     <div>
             <a href="{{ url_for('deck', username=current_user.username, deck=deck.id) }}">Return to Deck</a>
     </div>
     <hr>
     <h3>Manage Cards</h3>
-    <table class=table>
+    <table class=table style="width:50%; vertical-align: middle;">
         {% for card in deck.cards %}
             <tr>            
                 <td>{{ card.front }}</td>

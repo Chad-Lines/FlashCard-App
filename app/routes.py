@@ -58,12 +58,19 @@ def register():
     return render_template('register.html', title='Register', form=form)
  
 # USER HOME -------------------------------------- 
-@app.route('/user/<username>') 
+@app.route('/user/<username>', methods=['POST', 'GET']) 
 @login_required 
 def user(username): 
     user = User.query.filter_by(username=username).first_or_404() 
     decks = user.decks 
-    return render_template('user.html', user=user, decks=decks) 
+    form = DeckForm()
+    if form.validate_on_submit():
+        deck = Deck(name=form.name.data, user_id=current_user.id)
+        db.session.add(deck)
+        db.session.commit()
+        flash('New deck "{}" created successfully'.format(deck.name))
+        return redirect(url_for('user', username=current_user.username))
+    return render_template('user.html', user=user, decks=decks, form=form) 
  
 
 # DECK VIEW -------------------------------------- 
@@ -103,6 +110,20 @@ def delete_card(card_id, deck_id):
     card_front = card.front
     db.session.delete(card)
     db.session.commit()
-    flash('Card: "{}" has been deleted'.format(card_front))
+    flash('Card "{}" has been deleted'.format(card_front))
     return redirect(url_for('view_all_cards', username=current_user.username, deck=deck_id))
 
+# DELETE DECK --------------------------------------
+@app.route('/delete-deck/<deck_id>', methods=['GET', 'POST'])
+@login_required
+def delete_deck(deck_id):
+    deck = Deck.query.filter_by(id=deck_id).first_or_404()
+    name = deck.name
+    # Delete all cards in the deck
+    for card in deck.cards:
+        db.session.delete(card)
+    # Delete the deck and commit changes
+    db.session.delete(deck)
+    db.session.commit()
+    flash('Deck "{}", and all associated cards have been deleted'.format(name))
+    return redirect(url_for('user', username=current_user.username))

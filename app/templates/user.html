@@ -1,12 +1,43 @@
 {% extends "base.html" %} 
  
 {% block content %} 
-    <h1>User: {{ user.username }}</h1> 
+    <h1>Decks</h1>    
+    {% include '_message.html' %}
     <hr>
-    <h2>Decks</h2> 
-    <ul> 
-        {% for d in decks %} 
-            <li><a href="{{ url_for('deck', username=user.username, deck=d.id) }}">{{ d.name }}</a></li> 
-        {% endfor %} 
-    </ul> 
+    <form action="" method="POST" novalidate>
+        <h4>Create New Deck</h4>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name }}
+        </p>
+        {{ form.submit(class_="btn") }}
+    </form>
+
+    <table>      
+        <h3>Current Decks</h3>  
+        <p style="color:red; font-size: 0.85em;"><i>All delete operations are final</p></i>
+        {% for d in decks %}
+        <tr class="table">             
+            <td><strong>{{ d.name }}</strong> ({{ d.cards.count() }} cards)</td>
+            <td>
+                <form action="{{ url_for('deck', username=user.username, deck=d.id) }}">
+                    <input type=submit class="btn" value="View">
+                </form>   
+            </td>
+            <td>
+                    <form action="">
+                        <input type=submit class="btn" value="Rename">
+                    </form>   
+                </td>      
+            <td>
+                <form action="{{ url_for('delete_deck', deck_id=d.id) }}">
+                    <input type=submit class="btn" value="Delete">
+                </form>   
+            </td>       
+        </tr>
+        {% endfor %}
+    </table>
+
+
 {% endblock %}

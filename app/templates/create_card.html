@@ -3,6 +3,7 @@
 {% block content %}
     <h1>{{ deck.name }}</h1>
     <h3>New Card</h3>
+    {% include '_message.html' %}
     <form action="" method="POST" novalidate>
         {{ form.hidden_tag() }}
         <p>
