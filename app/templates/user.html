@@ -21,14 +21,19 @@
                 <td><strong>{{ d.name }}</strong> ({{ d.cards.count() }} cards)</td>
                 <td>
                     <form action="{{ url_for('deck', username=user.username, deck=d.id) }}">
-                        <input type=submit class="btn" value="View & Manage Cards">
+                        <input type=submit class="btn" value="Study">
                     </form>
                 </td>
-                    <td>
-                        <form action="{{ url_for('edit_deck', deck_id=d.id) }}">
-                            <input type=submit class="btn" value="Edit">
-                        </form>   
-                    </td>      
+                <td>
+                    <form action="{{ url_for('view_all_cards', username=current_user.username, deck=d.id) }}">
+                        <input type=submit class="btn" value="View/Manage Cards">
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ url_for('edit_deck', deck_id=d.id) }}">
+                        <input type=submit class="btn" value="Edit">
+                    </form>   
+                </td>      
                 <td>
                     <form action="{{ url_for('delete_deck', deck_id=d.id) }}">
                         <input type=submit class="btn btn-danger" value="Delete">

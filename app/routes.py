@@ -4,6 +4,7 @@ from werkzeug.urls import url_parse
 from app.models import User, Deck, Card
 from app.forms import *
 from app import app, db
+import urllib
 
 # INDEX/HOME --------------------------------------
 @app.route('/')
@@ -86,12 +87,11 @@ def create_card(username, deck):
     form = CardForm()    
     deck = Deck.query.filter_by(id=deck).first_or_404()
     if form.validate_on_submit():
-        #deck = session.get('deck')
         card = Card(front=form.front.data, back=form.back.data, deck_id=deck.id, user_id=current_user.id)
         db.session.add(card)
         db.session.commit()
         flash('New card created succesfully')
-        return redirect(url_for('deck', username=current_user.username, deck=deck.id))
+        return redirect(url_for('user', username=current_user.username))
     return render_template('create_card.html', title='New Card', form=form, deck=deck)
 
 # VIEW ALL CARDS --------------------------------------

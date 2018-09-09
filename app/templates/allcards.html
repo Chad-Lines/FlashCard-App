@@ -4,18 +4,26 @@
     <h1>{{ deck.name }}</h1>
     {% include '_message.html' %}
     <div>
-            <a href="{{ url_for('deck', username=current_user.username, deck=deck.id) }}">Return to Deck</a>
+            <a href="{{ url_for('deck', username=current_user.username, deck=deck.id) }}">Go to Deck</a> | 
+            <a href="{{ url_for('user', username=current_user.username) }}">Return to User</a>
     </div>
     <hr>
     <h3>Manage Cards</h3>
+    <form action="{{ url_for('create_card', username=current_user.username, deck=deck.id) }}">
+        <input type=submit class="btn btn-primary" value="Add">
+    </form>
     <table class=table style="width:50%; vertical-align: middle;">
         {% for card in deck.cards %}
             <tr>            
                 <td>{{ card.front }}</td>
-                <td><button class="btn" onclick="">Edit</button></td>
+                <td>
+                    <form action="{{ url_for('edit_card', card_id=card.id, deck_id=deck.id) }}">
+                        <input type=submit class="btn" value="Edit">
+                    </form>   
+                </td>
                 <td>
                     <form action="{{ url_for('delete_card', card_id=card.id, deck_id=deck.id) }}">
-                        <input type=submit class="btn" value="Delete">
+                        <input type=submit class="btn btn-danger" value="Delete">
                     </form>                        
                 </td>
             </tr>
