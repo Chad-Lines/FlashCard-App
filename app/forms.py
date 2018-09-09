@@ -40,3 +40,14 @@ class CardForm(FlaskForm):
 class DeckForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     submit = SubmitField('Create')
+
+# Edit a card
+class CardEdit(FlaskForm):
+    front = TextAreaField('Front', validators=[DataRequired(), Length(min=1, max=500)])
+    back = TextAreaField('Back', validators=[DataRequired(), Length(min=1, max=500)])
+    submit = SubmitField('Save')
+
+# Edit a deck
+class DeckEdit(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Save')

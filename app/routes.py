@@ -2,7 +2,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from flask import render_template, flash, redirect, url_for, request, session
 from werkzeug.urls import url_parse
 from app.models import User, Deck, Card
-from app.forms import LoginForm, RegistrationForm, CardForm, DeckForm
+from app.forms import *
 from app import app, db
 
 # INDEX/HOME --------------------------------------
@@ -71,7 +71,6 @@ def user(username):
         flash('New deck "{}" created successfully'.format(deck.name))
         return redirect(url_for('user', username=current_user.username))
     return render_template('user.html', user=user, decks=decks, form=form) 
- 
 
 # DECK VIEW -------------------------------------- 
 @app.route('/user/<username>/<deck>') 
@@ -127,3 +126,29 @@ def delete_deck(deck_id):
     db.session.commit()
     flash('Deck "{}", and all associated cards have been deleted'.format(name))
     return redirect(url_for('user', username=current_user.username))
+
+# EDIT CARD --------------------------------------
+@app.route('/edit-card/<deck_id>/<card_id>', methods=['GET', 'POST'])
+@login_required
+def edit_card(card_id, deck_id):
+    deck = Deck.query.filter_by(id=deck_id).first_or_404()
+    card = Card.query.filter_by(id=card_id).first_or_404()
+    form = CardEdit()
+    if form.validate_on_submit():
+        card.front = form.front.data
+        card.back = form.back.data
+        db.session.commit()
+        return redirect(url_for('deck', username=current_user.username, deck=deck.id))
+    return render_template('edit_card.html', card=card, deck=deck, form=form)
+
+# EDIT DECK  --------------------------------------
+@app.route('/rename-deck/<deck_id>', methods=['GET', 'POST'])
+@login_required
+def edit_deck(deck_id):
+    deck = Deck.query.filter_by(id=deck_id).first_or_404()
+    form = DeckEdit()
+    if form.validate_on_submit():
+        deck.name = form.name.data
+        db.session.commit()
+        return redirect(url_for('deck', username=current_user.username, deck=deck.id))
+    return render_template('edit_deck.html', deck=deck, form=form)

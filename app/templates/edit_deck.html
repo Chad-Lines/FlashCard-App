@@ -2,21 +2,17 @@
 
 {% block content %}
     <h1>{{ deck.name }}</h1>
-    <h3>New Card</h3>
+    <hr>
+    <h3>Edit Deck</h3>
     {% include '_message.html' %}
     <form action="" method="POST" novalidate>
         {{ form.hidden_tag() }}
         <p>
-            {{ form.front.label }}<br>
-            {{ form.front }}
-        </p>
-        <p>
-            {{ form.back.label }}<br>
-            {{ form.back }}
+            {{ form.name.label }}<br>
+            {{ form.name(placeholder=deck.name) }}
         </p>
         <p>{{ form.submit(class_="btn btn-primary") }}</p>
     </form>
     <p><a href="{{ url_for('deck', username=current_user.username, deck=deck.id) }}">Cancel</a></p>
-
 
 {% endblock %}

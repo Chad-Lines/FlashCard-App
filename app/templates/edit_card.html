@@ -2,17 +2,17 @@
 
 {% block content %}
     <h1>{{ deck.name }}</h1>
-    <h3>New Card</h3>
+    <h3>Edit Card</h3>
     {% include '_message.html' %}
     <form action="" method="POST" novalidate>
         {{ form.hidden_tag() }}
         <p>
             {{ form.front.label }}<br>
-            {{ form.front }}
+            {{ form.front(placeholder=card.front) }}
         </p>
         <p>
             {{ form.back.label }}<br>
-            {{ form.back }}
+            {{ form.back(placeholder=card.back) }}
         </p>
         <p>{{ form.submit(class_="btn btn-primary") }}</p>
     </form>
