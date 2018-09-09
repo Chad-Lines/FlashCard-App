@@ -73,12 +73,15 @@ def user(username):
         return redirect(url_for('user', username=current_user.username))
     return render_template('user.html', user=user, decks=decks, form=form) 
 
-# DECK VIEW -------------------------------------- 
+# DECK STUDY VIEW -------------------------------------- 
 @app.route('/user/<username>/<deck>') 
 @login_required 
 def deck(username, deck): 
     deck = Deck.query.filter_by(id=deck).first_or_404()
-    return render_template('deck.html', deck=deck) 
+    card_list = []
+    for c in deck.cards:
+        card_list.append(c)
+    return render_template('study.html', deck=deck, card_list=card_list) 
 
 # CREATE CARD --------------------------------------
 @app.route('/<username>/<deck>/create-card', methods=['GET', 'POST'])
