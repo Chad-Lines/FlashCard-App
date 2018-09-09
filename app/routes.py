@@ -150,5 +150,5 @@ def edit_deck(deck_id):
     if form.validate_on_submit():
         deck.name = form.name.data
         db.session.commit()
-        return redirect(url_for('deck', username=current_user.username, deck=deck.id))
+        return redirect(url_for('user', username=current_user.username))
     return render_template('edit_deck.html', deck=deck, form=form)

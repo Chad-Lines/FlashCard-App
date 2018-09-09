@@ -4,7 +4,7 @@
     <h1>Decks</h1>       
     <hr>
     <form action="" method="POST" novalidate>
-        <h4>Create New Deck</h4>
+        <h3>Create New Deck</h3>
         {{ form.hidden_tag() }}
         <p>
             {{ form.name.label }}<br>
@@ -12,26 +12,26 @@
         </p>
         {{ form.submit(class_="btn btn-primary") }}
     </form>
-
-    <table >      
+    <br>
+    <table class="table">      
         <h3>Current Decks</h3>  
         {% include '_message.html' %}
         {% for d in decks %}
-            <tr class="table">             
+            <tr>             
                 <td><strong>{{ d.name }}</strong> ({{ d.cards.count() }} cards)</td>
                 <td>
                     <form action="{{ url_for('deck', username=user.username, deck=d.id) }}">
-                        <input type=submit class="btn btn-sm" value="View">
+                        <input type=submit class="btn" value="View & Manage Cards">
                     </form>
                 </td>
                     <td>
                         <form action="{{ url_for('edit_deck', deck_id=d.id) }}">
-                            <input type=submit class="btn btn-sm" value="Edit">
+                            <input type=submit class="btn" value="Edit">
                         </form>   
                     </td>      
                 <td>
                     <form action="{{ url_for('delete_deck', deck_id=d.id) }}">
-                        <input type=submit class="btn btn-danger btn-sm" value="Delete">
+                        <input type=submit class="btn btn-danger" value="Delete">
                     </form>   
                 </td> 
             </tr>

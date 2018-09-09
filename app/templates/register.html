@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Register</h1>
+    <hr>
     {% include '_message.html' %}
     <form action="" method="POST">
         {{ form.hidden_tag() }}
@@ -33,6 +34,6 @@
                 <span style="color: red;">{{ error }}</span>
             {% endfor %}
         </p>
-        <p>{{ form.submit() }}</p>
+        <p>{{ form.submit(class="btn btn-primary") }}</p>
     </form>
 {% endblock %}
