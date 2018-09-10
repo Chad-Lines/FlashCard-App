@@ -31,17 +31,22 @@ class Deck(db.Model):
         return 'Deck: {}'.format(self.name) 
 
 class Card(db.Model):
+    # General attributes
     id = db.Column(db.Integer, primary_key=True)
     front = db.Column(db.String(1000))
     back = db.Column(db.String(1000))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    
+    # Used for calculating practice schedule
     # days_till defines how much time between study dates
     # 0 = .now() (Same day)
     # 1 = .now() + 1 (next day)
     # 2 = .now() + 2 (following day)
     # etc...
-    days_till = db.Column(db.Integer) 
-    due_date = db.Column(db.DateTime, index=True, default=datetime.utcnow) #When cards are due to study
+    days_till = db.Column(db.Integer, default=0) 
+    due_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    
+    # Foreign Keys
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     deck_id = db.Column(db.Integer, db.ForeignKey('deck.id'))
 

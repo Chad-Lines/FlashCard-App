@@ -5,6 +5,8 @@ from app.models import User, Deck, Card
 from app.forms import *
 from app import app, db
 import urllib
+from datetime import datetime
+from sqlalchemy import and_
 
 # INDEX/HOME --------------------------------------
 @app.route('/')
@@ -156,10 +158,13 @@ def edit_deck(deck_id):
 @app.route('/user/<username>/<deck>') 
 @login_required 
 def deck(username, deck, i=0): 
-    
-    card_list = Card.query.filter_by(deck_id=deck)
+    today = datetime.utcnow()
+    # Getting all cards from the current deck that are due <= today
+    card_list = Card.query.filter(and_(Card.deck_id==deck),
+        (Card.due_date<=today)) 
     deck = Deck.query.filter_by(id=deck).first_or_404()    
-    card = card_list[i]
+    if card_list[i]:
+        card = card_list[i] # Getting the card at the specified index
 
     return render_template('study.html', deck=deck, card=card)
 
