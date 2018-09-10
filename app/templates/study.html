@@ -9,23 +9,37 @@
     </div>    
     <hr>
     
-    <h3>{{ card.front }}</h3>
+    {% if card %}
+        <h3>{{ card.front }}</h3>
+        <p>{{ deck.id }}</p>
 
-    <div id="back" style="visibility: hidden;">
-        <hr>
-        <h3>{{ card.back }}</h3>
-        <div>
-            <button class="btn btn-success" type="submit">Good</button>
-            <button class="btn btn-danger" type="submit">Bad</button>
+        <div id="back" style="visibility: hidden;">
+            <hr>
+            <h3>{{ card.back }}</h3>
+            <table>
+                <tr>
+                    <td>
+                        <form methods='POST' action="{{ url_for('card_correct', deck_id=deck.id, card_id=card.id, i=index) }}">
+                            <button class="btn btn-success" type="submit">Good</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form methods='POST' action="{{ url_for('card_incorrect', deck_id=deck.id, card_id=card.id, i=index) }}">
+                            <button class="btn btn-danger" type="submit">Bad</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
-    </div>
-
-    <div>    
-        <form methods='POST' action="{{ url_for('edit_card', card_id=card.id, deck_id=deck.id) }}">
-                <a href="#" id="showBtn" class="btn btn-primary" onclick="showBack()">Show</a>
-                <button id="editBtn" class="btn" type="submit">Edit</button>
-        </form>
-    </div>
+        <div>    
+            <form methods='POST' action="{{ url_for('edit_card', card_id=card.id, deck_id=deck.id) }}">
+                    <a href="#" id="showBtn" class="btn btn-primary" onclick="showBack()">Show</a>
+                    <button id="editBtn" class="btn" type="submit">Edit</button>
+            </form>
+        </div>
+    {% else %}
+        <h3>No cards are due at this time</h3>
+    {% endif %}
 
     <script>
         // Function to show the back of the card and allow the user

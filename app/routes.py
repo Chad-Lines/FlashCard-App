@@ -5,7 +5,7 @@ from app.models import User, Deck, Card
 from app.forms import *
 from app import app, db
 import urllib
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import and_
 
 # INDEX/HOME --------------------------------------
@@ -65,7 +65,7 @@ def register():
 @login_required 
 def user(username): 
     user = User.query.filter_by(username=username).first_or_404() 
-    decks = user.decks 
+    decks = user.decks     
     form = DeckForm()
     if form.validate_on_submit():
         deck = Deck(name=form.name.data, user_id=current_user.id)
@@ -74,8 +74,6 @@ def user(username):
         flash('New deck "{}" created successfully'.format(deck.name))
         return redirect(url_for('user', username=current_user.username))
     return render_template('user.html', user=user, decks=decks, form=form) 
-
-
 
 # CREATE CARD --------------------------------------
 @app.route('/<username>/<deck>/create-card', methods=['GET', 'POST'])
@@ -88,7 +86,7 @@ def create_card(username, deck):
         db.session.add(card)
         db.session.commit()
         flash('New card created succesfully')
-        return redirect(url_for('user', username=current_user.username))
+        return redirect(url_for('view_all_cards', username=current_user.username, deck=deck.id))
     return render_template('create_card.html', title='New Card', form=form, deck=deck)
 
 # VIEW ALL CARDS --------------------------------------
@@ -157,25 +155,34 @@ def edit_deck(deck_id):
 # DECK STUDY VIEW -------------------------------------- 
 @app.route('/user/<username>/<deck>') 
 @login_required 
-def deck(username, deck, i=0): 
+def deck(username, deck, index=0): 
     today = datetime.utcnow()
     # Getting all cards from the current deck that are due <= today
-    card_list = Card.query.filter(and_(Card.deck_id==deck),
-        (Card.due_date<=today)) 
+    card_list = Card.query.filter(and_(Card.deck_id==deck), (Card.due_date<=today)) 
     deck = Deck.query.filter_by(id=deck).first_or_404()    
-    if card_list[i]:
+    i = index
+    card = None
+    if card_list.count() > 0:
         card = card_list[i] # Getting the card at the specified index
 
-    return render_template('study.html', deck=deck, card=card)
+    return render_template('study.html', deck=deck, card=card, index=i)
 
 # CARD IS CORRECT --------------------------------------
-@app.route('/study/<deck_id>/<card_id>/correct', methods=['GET', 'POST'])
+@app.route('/study/<deck_id>/<card_id>/correct-<i>', methods=['GET', 'POST'])
 @login_required
-def card_correct(deck_id, card_id):
-    pass
+def card_correct(deck_id, card_id, i):    
+    deck = Deck.query.filter_by(id=deck_id).first_or_404()  
+    card = Card.query.filter_by(id=card_id).first_or_404()
+    card.days_till = (card.days_till + 1) * 2
+    card.due_date = card.due_date + timedelta(days=card.days_till)
+    db.session.commit()
+    i = int(i) + 1
+    return redirect(url_for('deck', username=current_user.username, deck=deck, index=i))
 
 # CARD IS INCORRECT --------------------------------------
-@app.route('/study/<deck_id>/<card_id>/incorrect', methods=['GET', 'POST'])
+@app.route('/study/<deck_id>/<card_id>/incorrect-<i>', methods=['GET', 'POST'])
 @login_required
-def card_incorrect(deck_id, card_id):  
-    pass
+def card_incorrect(deck_id, card_id, i):  
+    deck = Deck.query.filter_by(id=deck_id).first_or_404()  
+    i = int(i) + 1
+    return redirect(url_for('deck', username=current_user.username, deck=deck.id, index=i))
