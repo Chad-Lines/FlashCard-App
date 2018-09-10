@@ -73,15 +73,7 @@ def user(username):
         return redirect(url_for('user', username=current_user.username))
     return render_template('user.html', user=user, decks=decks, form=form) 
 
-# DECK STUDY VIEW -------------------------------------- 
-@app.route('/user/<username>/<deck>') 
-@login_required 
-def deck(username, deck): 
-    deck = Deck.query.filter_by(id=deck).first_or_404()
-    card_list = []
-    for c in deck.cards:
-        card_list.append(c)
-    return render_template('study.html', deck=deck, card_list=card_list) 
+
 
 # CREATE CARD --------------------------------------
 @app.route('/<username>/<deck>/create-card', methods=['GET', 'POST'])
@@ -155,3 +147,30 @@ def edit_deck(deck_id):
         db.session.commit()
         return redirect(url_for('user', username=current_user.username))
     return render_template('edit_deck.html', deck=deck, form=form)
+
+# ====================================================
+# LOGIC FOR STUDYING CARDS 
+# ====================================================
+
+# DECK STUDY VIEW -------------------------------------- 
+@app.route('/user/<username>/<deck>') 
+@login_required 
+def deck(username, deck, i=0): 
+    
+    card_list = Card.query.filter_by(deck_id=deck)
+    deck = Deck.query.filter_by(id=deck).first_or_404()    
+    card = card_list[i]
+
+    return render_template('study.html', deck=deck, card=card)
+
+# CARD IS CORRECT --------------------------------------
+@app.route('/study/<deck_id>/<card_id>/correct', methods=['GET', 'POST'])
+@login_required
+def card_correct(deck_id, card_id):
+    pass
+
+# CARD IS INCORRECT --------------------------------------
+@app.route('/study/<deck_id>/<card_id>/incorrect', methods=['GET', 'POST'])
+@login_required
+def card_incorrect(deck_id, card_id):  
+    pass

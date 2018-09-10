@@ -35,6 +35,13 @@ class Card(db.Model):
     front = db.Column(db.String(1000))
     back = db.Column(db.String(1000))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    # days_till defines how much time between study dates
+    # 0 = .now() (Same day)
+    # 1 = .now() + 1 (next day)
+    # 2 = .now() + 2 (following day)
+    # etc...
+    days_till = db.Column(db.Integer) 
+    due_date = db.Column(db.DateTime, index=True, default=datetime.utcnow) #When cards are due to study
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     deck_id = db.Column(db.Integer, db.ForeignKey('deck.id'))
 

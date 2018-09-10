@@ -9,7 +9,39 @@
     </div>    
     <hr>
     
-    {% for card in deck.cards %} 
-        {% include '_study_card.html' %}
-    {% endfor %}  
+    <h3>{{ card.front }}</h3>
+
+    <div id="back" style="visibility: hidden;">
+        <hr>
+        <h3>{{ card.back }}</h3>
+        <div>
+            <button class="btn btn-success" type="submit">Good</button>
+            <button class="btn btn-danger" type="submit">Bad</button>
+        </div>
+    </div>
+
+    <div>    
+        <form methods='POST' action="{{ url_for('edit_card', card_id=card.id, deck_id=deck.id) }}">
+                <a href="#" id="showBtn" class="btn btn-primary" onclick="showBack()">Show</a>
+                <button id="editBtn" class="btn" type="submit">Edit</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to show the back of the card and allow the user
+        // to indicate whether they got it or not.
+        function showBack() {
+            var back = document.getElementById("back");
+            var showBtn = document.getElementById("showBtn")
+            var editBtn = document.getElementById("editBtn")
+
+            // Show the back of the card and the Good/Bad buttons
+            back.style.visibility = "visible";     
+            
+            // Hide the "show" and "edit" buttons
+            showBtn.style.visibility = "hidden";    
+            editBtn.style.visibility = "hidden";    
+        }
+    </script>
+
 {% endblock %}
