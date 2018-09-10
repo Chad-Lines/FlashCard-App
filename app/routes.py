@@ -151,11 +151,14 @@ def edit_deck(deck_id):
 # ====================================================
 # LOGIC FOR STUDYING CARDS 
 # ====================================================
+global card_list
 
 # DECK STUDY VIEW -------------------------------------- 
 @app.route('/user/<username>/<deck>') 
 @login_required 
 def deck(username, deck, index=0): 
+    global card_list 
+
     today = datetime.utcnow()
     # Getting all cards from the current deck that are due <= today
     card_list = Card.query.filter(and_(Card.deck_id==deck), (Card.due_date<=today)) 
@@ -170,19 +173,33 @@ def deck(username, deck, index=0):
 # CARD IS CORRECT --------------------------------------
 @app.route('/study/<deck_id>/<card_id>/correct-<i>', methods=['GET', 'POST'])
 @login_required
-def card_correct(deck_id, card_id, i):    
-    deck = Deck.query.filter_by(id=deck_id).first_or_404()  
+def card_correct(deck_id, card_id, i):   
+    global card_list 
+
+    deck = deck_id  
+
+    # Updating the card
     card = Card.query.filter_by(id=card_id).first_or_404()
     card.days_till = (card.days_till + 1) * 2
     card.due_date = card.due_date + timedelta(days=card.days_till)
     db.session.commit()
-    i = int(i) + 1
+
+    # Managing the index
+    card_list.remove(i)
+    i = int(i) + 1 # Move on to the next card
     return redirect(url_for('deck', username=current_user.username, deck=deck, index=i))
 
 # CARD IS INCORRECT --------------------------------------
 @app.route('/study/<deck_id>/<card_id>/incorrect-<i>', methods=['GET', 'POST'])
 @login_required
 def card_incorrect(deck_id, card_id, i):  
-    deck = Deck.query.filter_by(id=deck_id).first_or_404()  
-    i = int(i) + 1
-    return redirect(url_for('deck', username=current_user.username, deck=deck.id, index=i))
+    global card_list
+
+    # Take the card that was missed, and add it to the back of the list
+    recycle_card = card_list[i]
+    card_list.remove(i)
+    card_list.append(recycle_card)
+
+    deck = deck_id
+    i = int(i) + 1 # Move on to the next card
+    return redirect(url_for('deck', username=current_user.username, deck=deck, index=i))
