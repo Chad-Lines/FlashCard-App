@@ -217,5 +217,8 @@ def card_incorrect(deck_id, card_id, i):
 # ADMIN HOME PAGE --------------------------------------
 @app.route('/admin/<username>', methods=['GET', 'POST'])
 @login_required
-def admin(username):
-    pass
+def administration(username):
+    if current_user.ADMIN == 1:
+        return redirect(url_for('admin'))
+    else:
+        return redirect(url_for('index'))

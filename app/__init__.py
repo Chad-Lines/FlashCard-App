@@ -17,7 +17,7 @@ from app import routes, models
 from app.models import User, Deck, Card
 from app.model_views import AdminPage
 # Adding the admin pages
-admin = AdminPage(app, name="FlashCard Admin")
+admin = Admin(app, name="FlashCard Admin", index_view=AdminPage())
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Deck, db.session))
 admin.add_view(ModelView(Card, db.session))
