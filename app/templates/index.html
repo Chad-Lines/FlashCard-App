@@ -6,7 +6,7 @@
         <p>Please <a href="{{ url_for('login') }}">Log in</a> or <a href="{{ url_for('register') }}">Register</a> to continue.</p> 
     {% else %}
         <p>
-            Proceed to <a href="{{ url_for('user', username=current_user.username) }}">Home</a>
+            View your <a href="{{ url_for('user', username=current_user.username) }}">Decks</a>
             or <a href="{{ url_for('logout') }}">Logout</a> 
         </p>
     {% endif %}
