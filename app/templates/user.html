@@ -18,7 +18,7 @@
         {% include '_message.html' %}
         {% for d in decks %}
             <tr>             
-                <td><strong>{{ d.name }}</strong>, ID: {{ d.id }} ({{ d.cards.count() }} cards)</td>
+                <td><strong>{{ d.name }}</strong> ({{ d.cards.count() }} cards)</td>
                 <td>
                     <form action="{{ url_for('deck', username=user.username, deck=d.id) }}">
                         <input type=submit class="btn" value="Study">

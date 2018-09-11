@@ -161,11 +161,11 @@ def deck(username, deck, index=0):
 
     today = datetime.utcnow()
     # Getting all cards from the current deck that are due <= today
-    card_list = Card.query.filter(and_(Card.deck_id==deck), (Card.due_date<=today)) 
+    card_list = Card.query.filter(and_(Card.deck_id==deck), (Card.due_date<=today)).all() 
     deck = Deck.query.filter_by(id=deck).first_or_404()    
     i = index
     card = None
-    if card_list.count() > 0:
+    if len(card_list) > 0:
         card = card_list[i] # Getting the card at the specified index
 
     return render_template('study.html', deck=deck, card=card, index=i)
@@ -185,8 +185,9 @@ def card_correct(deck_id, card_id, i):
     db.session.commit()
 
     # Managing the index
-    card_list.remove(i)
-    i = int(i) + 1 # Move on to the next card
+    i = int(i)
+    card_list.pop(i)
+    i += 1 # Move on to the next card
     return redirect(url_for('deck', username=current_user.username, deck=deck, index=i))
 
 # CARD IS INCORRECT --------------------------------------
@@ -195,11 +196,19 @@ def card_correct(deck_id, card_id, i):
 def card_incorrect(deck_id, card_id, i):  
     global card_list
 
-    # Take the card that was missed, and add it to the back of the list
-    recycle_card = card_list[i]
-    card_list.remove(i)
-    card_list.append(recycle_card)
-
     deck = deck_id
-    i = int(i) + 1 # Move on to the next card
+
+   # Updating the card
+    card = Card.query.filter_by(id=card_id).first_or_404()
+    card.days_till = card.days_till + 0.0041
+    card.due_date = card.due_date + timedelta(days=card.days_till)
+    db.session.commit()
+
+    #recycle_card = card_list[i]
+    #idx = len(card_list) - 1
+    #card_list.insert(idx, recycle_card)
+    
+    i = int(i)
+    card_list.pop(i)
+    i += 1 # Move on to the next card
     return redirect(url_for('deck', username=current_user.username, deck=deck, index=i))

@@ -15,6 +15,7 @@
 
         <div id="back" style="visibility: hidden;">
             <hr>
+            <p>Card Index: {{ index }}</p>
             <h3>{{ card.back }}</h3>
             <table>
                 <tr>
@@ -25,9 +26,13 @@
                     </td>
                     <td>
                         <form methods='POST' action="{{ url_for('card_incorrect', deck_id=deck.id, card_id=card.id, i=index) }}">
-                            <button class="btn btn-danger" type="submit">Bad</button>
+                            <button class="btn btn-danger" type="submit">Again</button>
                         </form>
                     </td>
+                </tr>                
+                <tr>
+                    <td></td>           
+                    <td><i>10 min</i></td>
                 </tr>
             </table>
         </div>
