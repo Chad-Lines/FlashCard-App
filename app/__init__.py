@@ -21,4 +21,3 @@ admin = Admin(app, name="FlashCard Admin", index_view=AdminPage())
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Deck, db.session))
 admin.add_view(ModelView(Card, db.session))
-

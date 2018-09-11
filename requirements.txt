@@ -1,0 +1,11 @@
+# These requirements reflect what has been tested.
+# Newer/older versions may work, but have not been
+# tested.
+
+psycopg2==2.7.5
+flask==1.0.2
+flask-sqlalchemy==2.3.2
+flask-login==0.4.1
+flask-admin
+flask-wtf==0.14.2
+flask-migrate==2.2.1

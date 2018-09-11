@@ -1,5 +1,5 @@
 from flask_login import current_user, login_user, logout_user, login_required
-from flask import render_template, flash, redirect, url_for, request, session
+from flask import render_template, flash, redirect, url_for, request, session, abort
 from werkzeug.urls import url_parse
 from app.models import User, Deck, Card
 from app.forms import *
@@ -209,16 +209,3 @@ def card_incorrect(deck_id, card_id, i):
     card_list.pop(i)
     i += 1 # Move on to the next card
     return redirect(url_for('deck', username=current_user.username, deck=deck, index=i))
-
-# ====================================================
-# ADMIN INTERFACE
-# ====================================================
-
-# ADMIN HOME PAGE --------------------------------------
-@app.route('/admin/<username>', methods=['GET', 'POST'])
-@login_required
-def administration(username):
-    if current_user.ADMIN == 1:
-        return redirect(url_for('admin'))
-    else:
-        return redirect(url_for('index'))
