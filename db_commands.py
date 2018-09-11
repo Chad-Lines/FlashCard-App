@@ -40,3 +40,11 @@ d = Deck(name='Samoan Language', user_id=u.id)
 # Adding a card to a deck 
 c = Card.query.get(1) 
 c.deck_id = 1
+
+# 9/11: Set an admin user
+# Migrate and update db, then:
+users = User.query.all()
+for u in users:
+    u.ADMIN = 0
+
+user[3].ADMIN = 1

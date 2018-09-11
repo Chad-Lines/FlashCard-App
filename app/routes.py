@@ -209,3 +209,13 @@ def card_incorrect(deck_id, card_id, i):
     card_list.pop(i)
     i += 1 # Move on to the next card
     return redirect(url_for('deck', username=current_user.username, deck=deck, index=i))
+
+# ====================================================
+# ADMIN INTERFACE
+# ====================================================
+
+# ADMIN HOME PAGE --------------------------------------
+@app.route('/admin/<username>', methods=['GET', 'POST'])
+@login_required
+def admin(username):
+    pass
