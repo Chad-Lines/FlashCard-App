@@ -4,8 +4,8 @@
     <h1>{{ deck.name }}</h1>
     {% include '_message.html' %}
     <div>
-            <a href="{{ url_for('deck', username=current_user.username, deck=deck.id) }}">Go to Deck</a> | 
-            <a href="{{ url_for('user', username=current_user.username) }}">Return to User</a>
+            <a href="{{ url_for('deck', username=current_user.username, deck=deck.id) }}">Study Deck</a> | 
+            <a href="{{ url_for('user', username=current_user.username) }}">Return to Deck List</a>
     </div>
     <hr>
     <h3>Manage Cards</h3>

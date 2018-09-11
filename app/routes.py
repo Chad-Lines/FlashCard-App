@@ -94,7 +94,8 @@ def create_card(username, deck):
 @login_required
 def view_all_cards(username, deck):
     deck = Deck.query.filter_by(id=deck).first_or_404()
-    return render_template('allcards.html', deck=deck)
+    today = datetime.utcnow()
+    return render_template('allcards.html', deck=deck, today=today)
 
 # DELETE CARD --------------------------------------
 @app.route('/delete-card/<deck_id>/<card_id>', methods=['GET', 'POST'])
@@ -195,7 +196,6 @@ def card_correct(deck_id, card_id, i):
 @login_required
 def card_incorrect(deck_id, card_id, i):  
     global card_list
-
     deck = deck_id
 
    # Updating the card
@@ -203,11 +203,8 @@ def card_incorrect(deck_id, card_id, i):
     card.days_till = card.days_till + 0.0041
     card.due_date = card.due_date + timedelta(days=card.days_till)
     db.session.commit()
-
-    #recycle_card = card_list[i]
-    #idx = len(card_list) - 1
-    #card_list.insert(idx, recycle_card)
     
+    # Managing the index
     i = int(i)
     card_list.pop(i)
     i += 1 # Move on to the next card

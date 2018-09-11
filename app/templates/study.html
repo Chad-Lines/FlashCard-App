@@ -4,44 +4,27 @@
     <h1>{{ deck.name }}</h1>   
     <div>
         <a href="{{ url_for('create_card', username=current_user.username, deck=deck.id) }}">Add Card</a> |
-        <a href="{{ url_for('view_all_cards', username=current_user.username, deck=deck.id) }}">View All Cards</a> | 
-        <a href="{{ url_for('user', username=current_user.username) }}">Return to User</a>
+        <a href="{{ url_for('view_all_cards', username=current_user.username, deck=deck.id) }}">Manage Cards</a> | 
+        <a href="{{ url_for('user', username=current_user.username) }}">Return to Deck List</a>
     </div>    
     <hr>
     
     {% if card %}
         <h3>{{ card.front }}</h3>
-        <p>{{ deck.id }}</p>
 
         <div id="back" style="visibility: hidden;">
             <hr>
-            <p>Card Index: {{ index }}</p>
             <h3>{{ card.back }}</h3>
-            <table>
-                <tr>
-                    <td>
-                        <form methods='POST' action="{{ url_for('card_correct', deck_id=deck.id, card_id=card.id, i=index) }}">
-                            <button class="btn btn-success" type="submit">Good</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form methods='POST' action="{{ url_for('card_incorrect', deck_id=deck.id, card_id=card.id, i=index) }}">
-                            <button class="btn btn-danger" type="submit">Again</button>
-                        </form>
-                    </td>
-                </tr>                
-                <tr>
-                    <td></td>           
-                    <td><i>10 min</i></td>
-                </tr>
-            </table>
         </div>
-        <div>    
+        
+        <!-- To be replaced -->
+        <div id="show">    
             <form methods='POST' action="{{ url_for('edit_card', card_id=card.id, deck_id=deck.id) }}">
                     <a href="#" id="showBtn" class="btn btn-primary" onclick="showBack()">Show</a>
                     <button id="editBtn" class="btn" type="submit">Edit</button>
             </form>
         </div>
+
     {% else %}
         <h3>No cards are due at this time</h3>
     {% endif %}
@@ -59,7 +42,28 @@
             
             // Hide the "show" and "edit" buttons
             showBtn.style.visibility = "hidden";    
-            editBtn.style.visibility = "hidden";    
+            editBtn.style.visibility = "hidden";
+            
+            $('#show').html(`
+                <table>
+                    <tr>
+                        <td>
+                            <form methods='POST' action="{{ url_for('card_correct', deck_id=deck.id, card_id=card.id, i=index) }}">
+                                <button class="btn btn-success" type="submit">Good</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form methods='POST' action="{{ url_for('card_incorrect', deck_id=deck.id, card_id=card.id, i=index) }}">
+                                <button class="btn btn-danger" type="submit">Again</button>
+                            </form>
+                        </td>
+                    </tr>                
+                    <tr>
+                        <td></td>           
+                        <td><i>10 min</i></td>
+                    </tr>
+                </table>`
+            );
         }
     </script>
 
