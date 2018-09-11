@@ -25,10 +25,10 @@
                     </ul>
                 {% else %}
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('user', username=current_user.username) }}">Decks</a></li>
                     {% if current_user.ADMIN %}
                         <li><a href="{{ url_for('admin.index') }}">Admin</a></li>
                     {% endif %}
+                    <li><a href="{{ url_for('user', username=current_user.username) }}">Decks</a></li>                   
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">User: {{ current_user.username }}</a></li>    
@@ -37,7 +37,7 @@
                 {% endif %}
             </div>
         </nav>
-        <div style="margin-left:2.5%;">
+        <div style="margin-left:2.5%; margin-right: 10%">
             {% block content %}{% endblock %}
         </div>
     </body>
